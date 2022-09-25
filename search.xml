@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>树结构</title>
+      <link href="/2022/09/25/%E6%A0%91%E7%BB%93%E6%9E%84/"/>
+      <url>/2022/09/25/%E6%A0%91%E7%BB%93%E6%9E%84/</url>
+      
+        <content type="html"><![CDATA[<h1 id="树结构"><a href="#树结构" class="headerlink" title="树结构"></a>树结构</h1><p><strong>二叉排序树</strong>，缺陷：在极端情况下，一个有序序列会退化成链表</p><p>所以，要使用<strong>平衡树</strong>来进行调节</p><p>为什么要保证树的平衡？ 因为树的查询效率取决于树的高度，让树尽可能的平衡，就是为了减少树的高度。</p><p>那<strong>B树</strong>的作用是什么？</p><p>B树又叫多路查找树，每个结点可以拥有多于两个孩子结点。m路B树最多就可以拥有m个孩子结点</p><p><img src="https://cdn.jsdelivr.net/gh/shatianhui/mypictures/img/202209251714106.png" alt="image-20220925162730234"></p><p>这是棵三路B树。为什么要设计成多路？就是为了进一步降低树的高度。路数越多，树就越低。那路数无限大，不就更好？</p><p>为什么文件系统的索引使用B树，而不使用红黑树或者是有序数组？</p><p>文件系统或者数据库的索引是存储在硬盘上的，如果数据量越大，就不能一次性的加载到内存。这时候，能够体现B树的多路存储作用，每次加载B树的一个结点，然后一步一步往下找。</p><p><img src="https://cdn.jsdelivr.net/gh/shatianhui/mypictures/img/202209251714091.png" alt="image-20220925163551755"></p><p>假设内存一次性只能加载两个树，这时候有序数组【25，25，30，40，43，45，50，59，65，77，85】是不能够一次性加载到内存的，所以，可以构建三路B树，每个结点至多有两个数。</p><p>那<strong>B+树</strong>有什么作用？</p><p><img src="https://cdn.jsdelivr.net/gh/shatianhui/mypictures/img/202209251714422.png" alt="image-20220925164941429"></p><p>这是一棵4路B+树，<strong>数据都在叶子结点，并且通过链表相连</strong>。</p><p>使用场景：比如select查询多条数据，B树可能需要做中序遍历，跨层访问，而B+树所有的数据都在叶子结点，同时拥有链表结构，只需要找到首尾，就可以把所有数据取出来。</p><p>mysql存储索引使用的是B+树。</p><p>B+树查询效率与树的高度有关，O(logn),而hash查询索引效率O(1),hash比B+树更快，为什么要用B+树，而不用hash?</p><p>1.只查询一个数据，确实是hash更快，单数据库经常查询的是多条数据，这时候B+树索引有序，又有链表相连，查询效率要比hash快很多。2.前面提到，数据库索引一般存储在磁盘，如果数据量大，一次可能无法装入内存，B+树可以分批加载，树的高度越低，可以提高查询效率。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 二叉排序树 </tag>
+            
+            <tag> AVL </tag>
+            
+            <tag> B树 </tag>
+            
+            <tag> B+树 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>回文系列</title>
       <link href="/2022/09/25/%E5%9B%9E%E6%96%87%E7%B3%BB%E5%88%97/"/>
       <url>/2022/09/25/%E5%9B%9E%E6%96%87%E7%B3%BB%E5%88%97/</url>
