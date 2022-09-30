@@ -4,7 +4,57 @@
   
     
     <entry>
-      <title>MySql45讲（一）</title>
+      <title>二分搜索</title>
+      <link href="/2022/09/30/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2/"/>
+      <url>/2022/09/30/%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2/</url>
+      
+        <content type="html"><![CDATA[<h1 id="二分搜索"><a href="#二分搜索" class="headerlink" title="二分搜索"></a>二分搜索</h1><p>没有重复元素的有序数组  普通二分查找</p><p>重复元素的有序数组  左侧边界的二分搜索，右侧边界的二分搜索</p><p><strong>左侧边界的二分搜索</strong></p><p>当target存在数组nums中时，返回的是第一个重复元素的索引</p><p>当target不存在数组nums中时</p><p>例：nums[]=[2,3,5,7]  target=4    返回的left=2</p><ul><li>left指向nums中大于target的最小元素索引</li><li>返回的是target应该插入的位置索引</li><li>返回nums数组中小于target的个数</li></ul><p><strong>右侧边界的二分搜索</strong></p><p>返回的是最后一个重复元素的索引</p><h1 id="二分搜索的应用"><a href="#二分搜索的应用" class="headerlink" title="二分搜索的应用"></a>二分搜索的应用</h1><p>什么问题可以应用二分搜索？</p><ul><li><input checked="" disabled="" type="checkbox"> 从题目中抽象出一个自变量 x，一个关于 x的函数 f(x)，以及一个目标值 target。</li></ul><p>同时，x, f(x), target 还要满足以下条件：</p><ol><li>f(x) 必须是在 x 上的单调函数（单调增单调减都可以）。</li><li>题目是让你计算满足约束条件 <code>f(x) == target</code> 时的 <code>x</code> 的值。</li></ol><p>例：<a href="https://leetcode.cn/problems/koko-eating-bananas/">875. 爱吃香蕉的珂珂</a></p><p>分析：自变量x是珂珂吃香蕉的速度，f(x)是吃完所有堆上所用时间。 x越大，吃的越快，所花时间f(x)就越小。吃香蕉的时间限制H就是target.</p><p>x的左右边界如何确定？ 最小速度=1 最大速度堆上最大的香蕉个数  使用左侧边界的二分搜索</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minEatingSpeed</span><span class="params">(<span class="type">int</span>[] piles, <span class="type">int</span> h)</span> &#123;</span><br><span class="line">        <span class="type">int</span> left=<span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> right=maxV(piles);</span><br><span class="line">        <span class="keyword">while</span>(left&lt;=right)&#123;</span><br><span class="line">            <span class="type">int</span> mid=left+(right-left)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(f(piles,mid)==h)&#123;</span><br><span class="line">                right=mid-<span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(f(piles,mid)&lt;h)&#123;</span><br><span class="line">                right=mid-<span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(f(piles,mid)&gt;h)&#123;</span><br><span class="line">                left=mid+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 速度为x时，吃完所有堆所需时间  递减可重复的有序序列</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">long</span> <span class="title function_">f</span><span class="params">(<span class="type">int</span>[] piles, <span class="type">int</span> x)</span>&#123;   <span class="comment">// int类型不够</span></span><br><span class="line">        <span class="type">long</span> hours=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;piles.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(piles[i]%x==<span class="number">0</span>)&#123;</span><br><span class="line">                hours+=piles[i]/x;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                hours=hours+<span class="number">1</span>+piles[i]/x;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> hours;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 求堆中最大值</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxV</span><span class="params">(<span class="type">int</span>[] piles)</span>&#123;</span><br><span class="line">        <span class="type">int</span> max=piles[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;piles.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(piles[i]&gt;max)&#123;</span><br><span class="line">                max=piles[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><a href="https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days/">1011. 在 D 天内送达包裹的能力</a></p><p>自变量x为船载重，f(x)为所有包裹送达所需时间。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 二分搜索 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MySQL 45讲（二）</title>
+      <link href="/2022/09/29/MySql45%E8%AE%B2(2)/"/>
+      <url>/2022/09/29/MySql45%E8%AE%B2(2)/</url>
+      
+        <content type="html"><![CDATA[<h1 id="事务的隔离性"><a href="#事务的隔离性" class="headerlink" title="事务的隔离性"></a>事务的隔离性</h1><p>数据库原本c的值为1</p><img src="C:/Users/shatianhui/AppData/Roaming/Typora/typora-user-images/image-20220928113353148.png" alt="image-20220928113353148" style="zoom:50%;" /><p>不同隔离级别的结果</p><ul><li><p>隔离级别为<strong>读未提交</strong>（read uncommitted）:一个事务还没提交时，它的事务就能被别的事务所看见。</p><p>事务B未提交，但结果已经被事务A所看见。 V1=2 V2=2 V3=2</p></li><li><p>隔离级别为<strong>读提交</strong>（read committed）:一个事务提交之后，它的结果才能被其他事务所看见。</p><p>V1=1 V2=2 V3=2</p></li><li><p>隔离级别为<strong>可重复读</strong>（repeatable read）: 一个事务执行过程中看到的数据，总是和这个事务在启动时看到的一样。并且，未提交的变更对其他事务也是不可见的。</p><p>V1=1 V2=1 V3=2</p></li><li><p>隔离级别为<strong>串行化</strong>（serializable）:对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。</p><p>在事务B将1改成2时锁住，直到事务A执行完成,事务B才能继续执行。 V1=1 V2=1 V3=2</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> mysql高级 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 事务隔离级别 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MySQL 45讲（一）</title>
       <link href="/2022/09/27/MySql45%E8%AE%B2(1)/"/>
       <url>/2022/09/27/MySql45%E8%AE%B2(1)/</url>
       
